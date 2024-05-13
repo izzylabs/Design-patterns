@@ -1,0 +1,20 @@
+{
+    "name": "geometrical-figures",
+    "version": "1.0.0",
+    "description": "writing typescript code for design-patterns 1st project",
+    "main": "index.ts",
+    "scripts": {
+        "test": "jest"
+    },
+    "author": "Dasha Delbano",
+    "license": "ISC",
+    "devDependencies": {
+        "@types/jest": "^29.5.12",
+        "@types/node": "^20.12.7",
+        "jest": "^29.7.0",
+        "ts-jest": "^29.1.2"
+    },
+    "dependencies": {
+        "typescript": "^5.4.5"
+    }     
+}
