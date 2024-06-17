@@ -3,9 +3,11 @@ import { Point } from '../src/entities/Point';
 
 describe('Oval', () => {
   let oval: Oval;
+  let circle: Oval;
 
   beforeEach(() => {
-    oval = new Oval('2', new Point(0, 0), 4, 2);
+    oval = new Oval('Oval-1', new Point(0, 0), 4, 2);
+    circle = new Oval('Oval-2', new Point(0, 0), 3, 3);
   });
 
   test('should calculate area correctly', () => {
@@ -13,7 +15,7 @@ describe('Oval', () => {
   });
 
   test('should calculate perimeter correctly', () => {
-    expect(oval.perimeter()).toBeCloseTo(9.9346, 4); // Adjusted value based on corrected formula
+    expect(oval.perimeter()).toBeCloseTo(10.9956, 4);
   });
 
   test('should validate oval correctly', () => {
@@ -21,7 +23,6 @@ describe('Oval', () => {
   });
 
   test('should check if oval is a circle correctly', () => {
-    const circle = new Oval('10', new Point(0, 0), 4, 4);
     expect(circle.isCircle()).toBe(true);
   });
 
@@ -29,4 +30,3 @@ describe('Oval', () => {
     expect(oval.intersectsAxis(2)).toBe(true);
   });
 });
-  

@@ -1,35 +1,40 @@
 import path from 'path';
-import { FileReader } from './Utils/FileReader';
-import { ShapeFactory } from './factory/ShapeFactory';
-import { logger } from './Utils/Loggers';
+import logger from './Utils/Loggers';
+import { readShapesFromFile } from './Utils/ShapeReader';
+import { createShapes } from './Utils/ShapeCreator';
 import { Cube } from './entities/Cube';
 import { Oval } from './entities/Oval';
+import { CubeRepository } from './Repositories/CubeRepository';
+import { OvalRepository } from './Repositories/OvalRepository';
+import { Warehouse } from './Utils/Warehouse';
 
-try {
-  const filePath = path.resolve(__dirname, '..', 'data', 'shapes.txt');
-  const lines = FileReader.readShapesFromFile(filePath);
-  logger.info(`Read ${lines.length} lines from shapes.txt`);
-
-  const shapes = lines.map(line => {
+async function main() {
     try {
-      logger.info(`Processing line: ${line}`);
-      const shape = ShapeFactory.createShape(line);
-      logger.info(`Created shape: ${JSON.stringify(shape)}`);
-      return shape;
+      const filePath = path.resolve(__dirname, '../data/shapes.txt');
+      const lines = readShapesFromFile(filePath);
+      const shapes = createShapes(lines);
+  
+      const cubeRepo = CubeRepository.getInstance();
+      const ovalRepo = OvalRepository.getInstance();
+      const warehouse = Warehouse.getInstance();
+  
+      logger.info(`Total shapes processed: ${shapes.length}`);
+      for (const shape of shapes) {
+        if (shape instanceof Cube) {
+          console.log(`${shape.getId()} - Surface Area: ${shape.surfaceArea()}, Volume: ${shape.volume()}, Volume Ratio after slicing XY: ${shape.volumeRatioAfterSliceXY()}, Is Base On Coordinate Plane: ${shape.baseOnCoordinatePlane()}`);
+          await cubeRepo.create(shape);
+        } else if (shape instanceof Oval) {
+          console.log(`${shape.getId()} - Area: ${shape.area()}, Perimeter: ${shape.perimeter()}, Is Oval: ${shape.isShape()}, Is Circle: ${shape.isCircle()}, Intersects Axis: ${shape.intersectsAxis(10)}`);
+          await ovalRepo.create(shape);
+        }
+        await warehouse.update(shape.id);
+      }
+  
+      // Other operations like sorting, filtering, and updating shapes...
+  
     } catch (error) {
-      logger.error(`Error creating shape from line "${line}": ${error.message}`);
-      return null;
+      logger.error(`Unhandled exception in reading shapes: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
-  }).filter(Boolean);
-
-  console.log(`Total shapes processed: ${shapes.length}`);
-  shapes.forEach(shape => {
-    if (shape instanceof Cube) {
-      console.log(`Cube ID: ${shape.getId()} - Surface Area: ${shape.surfaceArea()}, Volume: ${shape.volume()}`);
-    } else if (shape instanceof Oval) {
-      console.log(`Oval ID: ${shape.id} - Area: ${shape.area()}, Perimeter: ${shape.perimeter()}, Is Oval: ${shape.isShape()}, Is Circle: ${shape.isCircle()}`);
-    }
-  });
-} catch (error) {
-  logger.error(`Unhandled exception in reading shapes: ${error instanceof Error ? error.message : 'Unknown error'}`);
-}
+  }
+  
+  main();
