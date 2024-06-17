@@ -3,24 +3,32 @@ import { Point } from '../src/entities/Point';
 
 describe('Cube', () => {
   let cube: Cube;
-  const basePoint = new Point(0, 0, 0);
 
   beforeEach(() => {
-    cube = new Cube('1', 'Test Cube', basePoint, 4);
+    cube = new Cube(new Point(0, 0), 3, '1');
   });
 
-  it('calculates area correctly', () => {
-    // Area of cube: 6 * side^2
-    expect(cube.area()).toBe(6 * 4 * 4);
+  test('should calculate surface area correctly', () => {
+    expect(cube.surfaceArea()).toBe(54);
   });
 
-  it('calculates volume correctly', () => {
-    // Volume of cube: side^3
-    expect(cube.volume()).toBe(4 * 4 * 4);
+  test('should calculate volume correctly', () => {
+    expect(cube.volume()).toBe(27);
   });
 
-  it('calculates perimeter correctly', () => {
-    // Perimeter of cube: 12 * side
-    expect(cube.perimeter()).toBe(12 * 4);
+  test('should validate cube correctly', () => {
+    expect(cube.isShape()).toBe(true);
+  });
+
+  test('should check if base is on coordinate plane correctly', () => {
+    expect(cube.baseOnCoordinatePlane()).toBe(true);
+  });
+
+  test('should calculate volume ratio after slicing correctly', () => {
+    expect(cube.volumeRatioAfterSliceXY()).toBe(0.5);
+  });
+
+  test('should return correct id', () => {
+    expect(cube.getId()).toBe('Cube-1');
   });
 });

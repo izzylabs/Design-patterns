@@ -1,14 +1,8 @@
 import fs from 'fs';
+import path from 'path';
 
-export function readShapeData(filePath: string): any[] {
-    const lines = fs.readFileSync(filePath, 'utf-8').split('\n');
-    return lines.map(line => {
-        const parts = line.split(' ');
-        return {
-            type: parts[0],
-            id: parts[1],
-            name: parts[2],
-            data: parts.slice(3).map(Number)
-        };
-    });
+export class FileReader {
+  static readShapesFromFile(filePath: string): string[] {
+    return fs.readFileSync(path.resolve(filePath), 'utf-8').split('\n').filter(Boolean);
+  }
 }

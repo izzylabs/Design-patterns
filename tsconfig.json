@@ -5,7 +5,8 @@
       "target": "es5",
       "moduleResolution": "node",
       "esModuleInterop": true,
-      "skipLibCheck": true
+      "skipLibCheck": true,
+      "types": ["node", "winston", "jest"]
     },
     "exclude": [
       "node_modules",

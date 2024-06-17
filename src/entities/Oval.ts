@@ -1,37 +1,31 @@
-import { Shape } from "./Shape";
-import { Point } from "./Point";
+import { Shape } from './Shape';
+import { Point } from './Point';
 
 export class Oval extends Shape {
-    isCircle(): boolean {
-        const a = Math.abs(this.point1.x - this.point2.x) / 2;
-        const b = Math.abs(this.point1.y - this.point2.y) / 2;
-        return a === b;
-    }
-    intersectsOneAxis(): boolean {
-        // Assuming the center of the oval and checking if it touches one axis
-        const centerX = (this.point1.x + this.point2.x) / 2;
-        const centerY = (this.point1.y + this.point2.y) / 2;
-        const a = Math.abs(this.point1.x - this.point2.x) / 2;
-        const b = Math.abs(this.point1.y - this.point2.y) / 2;
-        const touchesXAxis = (centerY - b <= 0 && centerY + b >= 0);
-        const touchesYAxis = (centerX - a <= 0 && centerX + a >= 0);
-        return (touchesXAxis !== touchesYAxis); // touches exactly one axis
-    }
-    constructor(id: string, name: string, public point1: Point, public point2: Point) {
-        super(id, name);
-    }
+  constructor(id: string, point1: Point, public majorAxis: number, public minorAxis: number) {
+    super(id, point1);
+  }
 
-    area(): number {
-        const a = Math.abs(this.point1.x - this.point2.x) / 2;
-        const b = Math.abs(this.point1.y - this.point2.y) / 2;
-        return Math.PI * a * b;
-    }
+  area(): number {
+    return Math.PI * (this.majorAxis / 2) * (this.minorAxis / 2);
+  }
 
-    perimeter(): number {
-        const a = Math.abs(this.point1.x - this.point2.x) / 2;
-        const b = Math.abs(this.point1.y - this.point2.y) / 2;
-        return Math.PI * (3 * (a + b) - Math.sqrt((3 * a + b) * (a + 3 * b)));
-    }
-    
+  perimeter(): number {
+    const a = this.majorAxis / 2;
+    const b = this.minorAxis / 2;
+    return Math.PI * Math.sqrt(2 * (a * a + b * b)); // Simplified formula for ellipse perimeter
+  }
+
+  isShape(): boolean {
+    return this.majorAxis > 0 && this.minorAxis > 0;
+  }
+
+  isCircle(): boolean {
+    return this.majorAxis === this.minorAxis;
+  }
+
+  intersectsAxis(distance: number): boolean {
+    return (Math.abs(this.point.x) <= distance && Math.abs(this.point.x + this.majorAxis) <= distance) ||
+           (Math.abs(this.point.y) <= distance && Math.abs(this.point.y + this.minorAxis) <= distance);
+  }
 }
-
