@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+      "outDir": "./dist",
+      "module": "commonjs",
+      "target": "ES2017",
+      "moduleResolution": "node",
+      "esModuleInterop": true,
+      "skipLibCheck": true,
+      "types": ["node", "winston", "jest"]
+    },
+    "exclude": [
+      "node_modules",
+      "dist",
+      "**/*.test.ts"
+    ]
+  }
+  
