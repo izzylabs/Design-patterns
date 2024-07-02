@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import Header from './components/Header/header';
 import { AgileStrategy } from './strategies/AgileStrategy';
 import { WaterfallStrategy } from './strategies/WaterfallStrategy';
 import { Task } from './models/Task';
@@ -9,9 +10,9 @@ import { AppleFactory } from './management/Factories/AppleFactory';
 import { SamsungFactory } from './management/Factories/SamsungFactory';
 import { Product } from './management/Models/Product';
 import ProductList from './components/TaskManagment/ProductManagment/ProductList';
+import Footer from './components/Footer/footer';
 
 const App: React.FC = () => {
-  // Task Management System
   const agile = new AgileStrategy();
   const waterfall = new WaterfallStrategy();
 
@@ -24,7 +25,6 @@ const App: React.FC = () => {
   project.addTask(task2);
   project.addTask(task3);
 
-  // Product Management System
   const appleFactory = new AppleFactory();
   const samsungFactory = new SamsungFactory();
 
@@ -37,11 +37,14 @@ const App: React.FC = () => {
 
   return (
       <div className="App">
-          <h1>Task Management System</h1>
+          <Header />
+          <h1> </h1>
           <ProjectComponent project={project} />
 
           <h1>Product Management System</h1>
           <ProductList products={products} />
+
+          <Footer />
       </div>
   );
 };
